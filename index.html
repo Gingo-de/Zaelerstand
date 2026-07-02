@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Zählerstand</title>
+
+<!-- iOS "Zum Home-Bildschirm hinzufügen" Unterstützung -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Zählerstand" />
+<meta name="theme-color" content="#121715" />
+<link rel="apple-touch-icon" href="data:image/png;base64,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" />
+
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: #121715; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    color: #EDEDE4;
+    padding-bottom: 60px;
+    padding-top: env(safe-area-inset-top);
+  }
+  input, button { font-family: inherit; }
+  input:focus { outline: none; }
+
+  .header {
+    border-bottom: 1px solid #24302C;
+    padding: 28px 20px 22px;
+  }
+  .header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo { width: 38px; height: 38px; border-radius: 8px; background: #1C2321; border: 1px solid #33403C; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  h1 { font-size: 1.15rem; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .subtitle { font-size: 0.78rem; color: #8B9691; margin: 0; }
+  .icon-btn { background: #1C2321; border: 1px solid #33403C; border-radius: 8px; padding: 9px; cursor: pointer; display: flex; }
+
+  .content { max-width: 720px; margin: 0 auto; padding: 24px 20px; }
+
+  .card { background: #171E1C; border: 1px solid #24302C; border-radius: 12px; padding: 18px; margin-bottom: 20px; }
+
+  .form-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .eyebrow { font-size: 0.82rem; color: #8B9691; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .date-input { background: #181F1D; border: 1px solid #33403C; border-radius: 6px; color: #EDEDE4; padding: 6px 10px; font-size: 0.85rem; }
+
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .field-label { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 0.75rem; color: #8B9691; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .digit-input { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 1.3rem; letter-spacing: 0.02em; color: #EDEDE4; background: #181F1D; border: 1px solid #33403C; border-radius: 6px; padding: 10px 12px; width: 100%; }
+
+  .save-btn { margin-top: 14px; width: 100%; background: #D6E85B; color: #121715; border: none; border-radius: 8px; padding: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+
+  .empty { text-align: center; padding: 50px 20px; color: #5C6A65; }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .chip-group { display: flex; gap: 6px; }
+  .chip { background: #181F1D; border: 1px solid #33403C; color: #8B9691; border-radius: 999px; padding: 6px 12px; font-size: 0.76rem; cursor: pointer; }
+  .chip.active { background: #1C2321; color: #EDEDE4; border-color: #4A5A54; }
+
+  .chart-scroll { overflow-x: auto; margin-top: 10px; }
+  .chart-scroll svg { display: block; }
+  .chart-note { font-size: 0.7rem; color: #5C6A65; margin-top: 10px; line-height: 1.5; }
+
+  .legend { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .legend-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; }
+  .legend-left { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-val { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #8B9691; }
+
+  .entry { background: #171E1C; border: 1px solid #24302C; border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
+  .entry-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .entry-date { font-size: 0.9rem; font-weight: 700; }
+  .del-btn { background: none; border: none; cursor: pointer; padding: 4px; color: #5C6A65; font-size: 1rem; }
+
+  .u-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .u-box { border-radius: 8px; padding: 10px 12px; }
+  .u-title { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; font-size: 0.7rem; color: #8B9691; }
+  .u-value { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 1.05rem; font-weight: 600; }
+  .u-delta { font-size: 0.72rem; color: #8B9691; margin-top: 3px; }
+  .u-start { font-size: 0.72rem; color: #5C6A65; margin-top: 3px; }
+
+  .entry-total { margin-top: 10px; text-align: right; font-size: 0.8rem; color: #8B9691; }
+  .entry-total b { color: #EDEDE4; }
+
+  .confirm-box { background: #241A18; border: 1px solid #4A2E28; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .confirm-text { font-size: 0.8rem; color: #E8A38A; }
+  .confirm-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-danger { background: #E8785B; color: #121715; border: none; border-radius: 5px; padding: 5px 10px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+  .btn-ghost { background: none; border: 1px solid #4A2E28; color: #E8A38A; border-radius: 5px; padding: 5px 10px; font-size: 0.75rem; cursor: pointer; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 10; }
+  .modal { background: #171E1C; border: 1px solid #33403C; border-radius: 14px; padding: 22px; width: 100%; max-width: 380px; max-height: 85vh; overflow-y: auto; }
+  .modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .modal-top h2 { font-size: 1rem; font-weight: 700; margin: 0; }
+  .close-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #8B9691; }
+
+  .price-row { margin-bottom: 14px; }
+  .price-input { width: 100%; background: #181F1D; border: 1px solid #33403C; border-radius: 6px; color: #EDEDE4; padding: 9px 12px; font-size: 0.9rem; font-family: ui-monospace, monospace; }
+  .hint { font-size: 0.72rem; color: #5C6A65; margin-top: 16px; line-height: 1.5; }
+
+  .settings-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+  .tab-btn { flex: 1; background: #181F1D; border: 1px solid #33403C; color: #8B9691; border-radius: 6px; padding: 8px; font-size: 0.78rem; cursor: pointer; }
+  .tab-btn.active { background: #1C2321; color: #EDEDE4; border-color: #4A5A54; }
+
+  .export-btn { width: 100%; background: #1C2321; border: 1px solid #33403C; color: #EDEDE4; border-radius: 8px; padding: 11px; font-size: 0.85rem; cursor: pointer; margin-bottom: 10px; text-align: left; display: flex; align-items: center; gap: 8px; }
+  .import-label { display: block; width: 100%; background: #1C2321; border: 1px dashed #33403C; color: #8B9691; border-radius: 8px; padding: 14px; font-size: 0.8rem; cursor: pointer; text-align: center; }
+  .import-input { display: none; }
+  .status-msg { font-size: 0.78rem; margin-top: 10px; }
+  .status-ok { color: #B8D96A; }
+  .status-err { color: #E8785B; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">⏱️</div>
+      <div>
+        <h1>Zählerstand</h1>
+        <p class="subtitle">Gas · Wasser · Strom, Monat für Monat</p>
+      </div>
+    </div>
+    <button class="icon-btn" id="openSettings" aria-label="Einstellungen">⚙️</button>
+  </div>
+</div>
+
+<div class="content">
+  <div class="card">
+    <div class="form-top">
+      <span class="eyebrow">Neue Ablesung</span>
+      <input type="date" id="dateInput" class="date-input" />
+    </div>
+    <div class="grid3" id="formFields"></div>
+    <button class="save-btn" id="saveBtn">＋ Ablesung speichern</button>
+    <div id="saveStatus" class="status-msg"></div>
+  </div>
+
+  <div class="card" id="statsCard">
+    <div class="toggle-row">
+      <span class="eyebrow">Statistik</span>
+      <div class="chip-group" id="chartTypeToggle">
+        <button class="chip active" data-chart="bar">Balken</button>
+        <button class="chip" data-chart="pie">Torte</button>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <div class="chip-group" id="chartMetricToggle">
+        <button class="chip active" data-metric="cost">Kosten (€)</button>
+        <button class="chip" data-metric="consumption">Verbrauch</button>
+      </div>
+    </div>
+    <div id="chartArea"></div>
+  </div>
+
+  <div id="historyContainer"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-top">
+      <h2 id="modalTitle">Einstellungen</h2>
+      <button class="close-btn" id="closeModal">✕</button>
+    </div>
+    <div class="settings-tabs">
+      <button class="tab-btn active" data-tab="prices">Preise</button>
+      <button class="tab-btn" data-tab="data">Daten</button>
+    </div>
+
+    <div id="tabPrices">
+      <div id="priceFields"></div>
+      <p class="hint">Diese Preise gelten für alle zukünftigen Kostenberechnungen. Ändere sie z.B. bei einer neuen Abrechnung.</p>
+    </div>
+
+    <div id="tabData" style="display:none;">
+      <button class="export-btn" id="exportJson">📦 Als JSON exportieren (für Backup / Wiederherstellung)</button>
+      <button class="export-btn" id="exportCsv">📊 Als CSV exportieren (für Excel / Numbers)</button>
+      <label class="import-label" for="importFile">📥 JSON-Backup importieren</label>
+      <input type="file" accept="application/json" id="importFile" class="import-input" />
+      <div id="importStatus" class="status-msg"></div>
+      <p class="hint">Deine Daten liegen nur lokal auf diesem Gerät im Browser-Speicher. Bei Löschen der App-Daten, Neuinstallation oder Gerätewechsel gehen sie verloren — nutze Export als Sicherung.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "meterTrackerData_v1";
+
+const UTILITIES = [
+  { key: "gas", label: "Gas", unit: "m³", color: "#E8A33D", soft: "rgba(232,163,61,0.12)", emoji: "🔥" },
+  { key: "wasser", label: "Wasser", unit: "m³", color: "#4FA3C7", soft: "rgba(79,163,199,0.12)", emoji: "💧" },
+  { key: "strom", label: "Strom", unit: "kWh", color: "#D6E85B", soft: "rgba(214,232,91,0.12)", emoji: "⚡" },
+];
+
+let state = { readings: [], prices: { gas: 0.10, wasser: 2.20, strom: 0.32 } };
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state.readings = parsed.readings || [];
+      state.prices = parsed.prices || state.prices;
+    }
+  } catch (e) { console.error("Laden fehlgeschlagen", e); }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
+  } catch (e) {
+    console.error("Speichern fehlgeschlagen", e);
+    return false;
+  }
+}
+
+function todayStr() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+
+function formatDate(iso) {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function eur(n) {
+  return n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+}
+
+function chronological() {
+  return [...state.readings].sort((a, b) => a.date < b.date ? -1 : 1);
+}
+function reverseChronological() {
+  return [...state.readings].sort((a, b) => a.date < b.date ? 1 : -1);
+}
+
+function findPrevious(entry, key) {
+  const list = chronological();
+  const idx = list.findIndex(r => r.id === entry.id);
+  for (let i = idx - 1; i >= 0; i--) {
+    if (list[i][key] !== null && list[i][key] !== undefined) return list[i][key];
+  }
+  return null;
+}
+
+// ---------- Form fields ----------
+function renderFormFields() {
+  const container = document.getElementById("formFields");
+  container.innerHTML = "";
+  UTILITIES.forEach(u => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <div class="field-label"><span class="dot" style="background:${u.color}"></span>${u.label} (${u.unit})</div>
+      <input type="number" inputmode="decimal" step="0.01" class="digit-input" id="field_${u.key}" placeholder="0" />
+    `;
+    container.appendChild(div);
+  });
+}
+
+document.getElementById("dateInput").value = todayStr();
+
+document.getElementById("saveBtn").addEventListener("click", () => {
+  const date = document.getElementById("dateInput").value;
+  const statusEl = document.getElementById("saveStatus");
+  if (!date) { statusEl.textContent = "Bitte ein Datum wählen."; statusEl.className = "status-msg status-err"; return; }
+
+  const vals = {};
+  let hasValue = false;
+  UTILITIES.forEach(u => {
+    const raw = document.getElementById(`field_${u.key}`).value;
+    vals[u.key] = raw === "" ? null : parseFloat(raw);
+    if (raw !== "") hasValue = true;
+  });
+  if (!hasValue) { statusEl.textContent = "Bitte mindestens einen Zählerstand eintragen."; statusEl.className = "status-msg status-err"; return; }
+
+  const entry = { id: `${date}-${Date.now()}`, date, ...vals };
+  state.readings.push(entry);
+  const ok = saveState();
+  statusEl.textContent = ok ? "Gespeichert." : "Speichern fehlgeschlagen.";
+  statusEl.className = ok ? "status-msg status-ok" : "status-msg status-err";
+  setTimeout(() => { statusEl.textContent = ""; }, 2000);
+
+  UTILITIES.forEach(u => { document.getElementById(`field_${u.key}`).value = ""; });
+  document.getElementById("dateInput").value = todayStr();
+  renderHistory();
+  renderChart();
+});
+
+// ---------- History ----------
+let confirmDeleteId = null;
+
+function renderHistory() {
+  const container = document.getElementById("historyContainer");
+  const list = reverseChronological();
+
+  if (list.length === 0) {
+    container.innerHTML = `<div class="empty">⏱️<p>Noch keine Ablesungen. Trag oben deinen ersten Zählerstand ein.</p></div>`;
+    return;
+  }
+
+  container.innerHTML = "";
+  list.forEach(entry => {
+    let totalCost = 0;
+    const uBoxes = UTILITIES.map(u => {
+      const val = entry[u.key];
+      if (val === null || val === undefined) return "";
+      const prev = findPrevious(entry, u.key);
+      const delta = prev !== null ? val - prev : null;
+      const cost = (delta !== null && delta >= 0) ? delta * (state.prices[u.key] || 0) : null;
+      if (cost !== null) totalCost += cost;
+      const deltaHtml = delta !== null
+        ? `<div class="u-delta">${delta >= 0 ? "+" : ""}${delta.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${u.unit}${cost !== null ? " · " + eur(cost) : ""}</div>`
+        : `<div class="u-start">Startwert</div>`;
+      return `
+        <div class="u-box" style="background:${u.soft}">
+          <div class="u-title">${u.emoji} ${u.label}</div>
+          <div class="u-value">${val.toLocaleString("de-DE")} ${u.unit}</div>
+          ${deltaHtml}
+        </div>`;
+    }).join("");
+
+    const div = document.createElement("div");
+    div.className = "entry";
+    div.innerHTML = `
+      <div class="entry-top">
+        <span class="entry-date">${formatDate(entry.date)}</span>
+        <button class="del-btn" data-id="${entry.id}">🗑️</button>
+      </div>
+      ${confirmDeleteId === entry.id ? `
+        <div class="confirm-box">
+          <span class="confirm-text">Diese Ablesung wirklich löschen?</span>
+          <div class="confirm-actions">
+            <button class="btn-danger" data-confirm-del="${entry.id}">Löschen</button>
+            <button class="btn-ghost" data-cancel-del="${entry.id}">Abbrechen</button>
+          </div>
+        </div>` : ""}
+      <div class="u-grid">${uBoxes}</div>
+      ${totalCost > 0 ? `<div class="entry-total">Gesamt: <b>${eur(totalCost)}</b></div>` : ""}
+    `;
+    container.appendChild(div);
+  });
+
+  container.querySelectorAll(".del-btn").forEach(btn => {
+    btn.addEventListener("click", () => { confirmDeleteId = btn.dataset.id; renderHistory(); });
+  });
+  container.querySelectorAll("[data-confirm-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.readings = state.readings.filter(r => r.id !== btn.dataset.confirmDel);
+      saveState();
+      confirmDeleteId = null;
+      renderHistory();
+      renderChart();
+    });
+  });
+  container.querySelectorAll("[data-cancel-del]").forEach(btn => {
+    btn.addEventListener("click", () => { confirmDeleteId = null; renderHistory(); });
+  });
+}
+
+// ---------- Statistik ----------
+let chartType = "bar";
+let chartMetric = "cost";
+
+function monthLabel(key) {
+  const [y, m] = key.split("-");
+  const d = new Date(parseInt(y), parseInt(m) - 1, 1);
+  return d.toLocaleDateString("de-DE", { month: "short", year: "2-digit" });
+}
+
+function computeMonthlyStats() {
+  const list = chronological();
+  const months = {};
+  const lastVal = { gas: null, wasser: null, strom: null };
+  list.forEach(entry => {
+    const key = entry.date.slice(0, 7);
+    if (!months[key]) months[key] = { gasCost: 0, wasserCost: 0, stromCost: 0, gasCons: 0, wasserCons: 0, stromCons: 0 };
+    UTILITIES.forEach(u => {
+      const val = entry[u.key];
+      if (val === null || val === undefined) return;
+      if (lastVal[u.key] !== null) {
+        const delta = val - lastVal[u.key];
+        if (delta >= 0) {
+          months[key][u.key + "Cons"] += delta;
+          months[key][u.key + "Cost"] += delta * (state.prices[u.key] || 0);
+        }
+      }
+      lastVal[u.key] = val;
+    });
+  });
+  return Object.keys(months).sort().map(k => ({ month: k, label: monthLabel(k), ...months[k] }));
+}
+
+function computeTotals(metric) {
+  const monthly = computeMonthlyStats();
+  const totals = { gas: 0, wasser: 0, strom: 0 };
+  monthly.forEach(m => {
+    UTILITIES.forEach(u => { totals[u.key] += metric === "cost" ? m[u.key + "Cost"] : m[u.key + "Cons"]; });
+  });
+  return totals;
+}
+
+function fmtVal(v, metric) {
+  return metric === "cost" ? eur(v) : v.toLocaleString("de-DE", { maximumFractionDigits: 1 });
+}
+
+function renderBarChart(monthly, metric) {
+  const suffix = metric === "cost" ? "Cost" : "Cons";
+  const maxVal = Math.max(1, ...monthly.flatMap(m => UTILITIES.map(u => m[u.key + suffix])));
+  const groupW = 74, barW = 16, gap = 3, chartH = 150, padTop = 14, padBottom = 34, padLeft = 10;
+  const width = Math.max(300, monthly.length * groupW + padLeft * 2);
+  const height = chartH + padTop + padBottom;
+
+  let bars = "";
+  monthly.forEach((m, i) => {
+    const gx = padLeft + i * groupW;
+    UTILITIES.forEach((u, j) => {
+      const val = m[u.key + suffix];
+      const barH = maxVal > 0 ? (val / maxVal) * chartH : 0;
+      const x = gx + j * (barW + gap);
+      const y = padTop + (chartH - barH);
+      bars += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(barH,1)}" rx="3" fill="${u.color}" />`;
+    });
+    const label = m.label;
+    bars += `<text x="${gx + (barW*3+gap*2)/2}" y="${padTop+chartH+18}" fill="#8B9691" font-size="10" text-anchor="middle">${label}</text>`;
+  });
+
+  return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${bars}</svg>`;
+}
+
+function renderPieChart(totals, metric) {
+  const sum = totals.gas + totals.wasser + totals.strom;
+  const cx = 100, cy = 100, r = 80;
+  if (sum <= 0) return { svg: "", legend: [] };
+
+  let angle = 0;
+  let paths = "";
+  const legend = [];
+  UTILITIES.forEach(u => {
+    const val = totals[u.key];
+    if (val <= 0) return;
+    const slice = (val / sum) * 360;
+    const start = angle;
+    const end = angle + slice;
+    angle = end;
+    const toRad = (deg) => (deg - 90) * Math.PI / 180;
+    const x1 = cx + r * Math.cos(toRad(start));
+    const y1 = cy + r * Math.sin(toRad(start));
+    const x2 = cx + r * Math.cos(toRad(end));
+    const y2 = cy + r * Math.sin(toRad(end));
+    const largeArc = slice > 180 ? 1 : 0;
+    if (slice >= 359.99) {
+      paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${u.color}" />`;
+    } else {
+      paths += `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${u.color}" />`;
+    }
+    legend.push({ label: u.label, color: u.color, val, pct: (val / sum) * 100, emoji: u.emoji });
+  });
+
+  const svg = `<svg width="200" height="200" viewBox="0 0 200 200">${paths}<circle cx="${cx}" cy="${cy}" r="34" fill="#171E1C" /></svg>`;
+  return { svg, legend };
+}
+
+function renderChart() {
+  const area = document.getElementById("chartArea");
+  const monthly = computeMonthlyStats();
+
+  if (monthly.length === 0) {
+    area.innerHTML = `<div class="empty" style="padding:30px 10px;">Noch nicht genug Daten für eine Statistik. Trag mindestens zwei Ablesungen ein.</div>`;
+    return;
+  }
+
+  if (chartType === "bar") {
+    const svg = renderBarChart(monthly, chartMetric);
+    const note = chartMetric === "cost"
+      ? "Kosten pro Monat, aufgeteilt nach Gas · Wasser · Strom."
+      : "Verbrauch pro Monat in jeweiliger Einheit (Gas/Wasser in m³, Strom in kWh) — Balken sind nicht direkt vergleichbar.";
+    area.innerHTML = `<div class="chart-scroll">${svg}</div><p class="chart-note">${note}</p>`;
+  } else {
+    const totals = computeTotals(chartMetric);
+    const { svg, legend } = renderPieChart(totals, chartMetric);
+    if (!svg) {
+      area.innerHTML = `<div class="empty" style="padding:30px 10px;">Noch keine Kosten/Verbrauch zum Anzeigen.</div>`;
+      return;
+    }
+    const legendHtml = legend.map(l => `
+      <div class="legend-row">
+        <div class="legend-left"><span class="legend-dot" style="background:${l.color}"></span>${l.emoji} ${l.label}</div>
+        <span class="legend-val">${fmtVal(l.val, chartMetric)} · ${l.pct.toFixed(0)}%</span>
+      </div>`).join("");
+    const note = chartMetric === "consumption"
+      ? "Anteile in jeweiliger Einheit (Gas/Wasser m³, Strom kWh) — nur als grobe Verteilung zu verstehen."
+      : "Kostenanteile über den gesamten erfassten Zeitraum.";
+    area.innerHTML = `<div style="display:flex; justify-content:center;">${svg}</div><div class="legend">${legendHtml}</div><p class="chart-note">${note}</p>`;
+  }
+}
+
+document.getElementById("chartTypeToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-chart]");
+  if (!btn) return;
+  chartType = btn.dataset.chart;
+  document.querySelectorAll("#chartTypeToggle .chip").forEach(b => b.classList.toggle("active", b === btn));
+  renderChart();
+});
+document.getElementById("chartMetricToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-metric]");
+  if (!btn) return;
+  chartMetric = btn.dataset.metric;
+  document.querySelectorAll("#chartMetricToggle .chip").forEach(b => b.classList.toggle("active", b === btn));
+  renderChart();
+});
+
+// ---------- Settings modal ----------
+const modalOverlay = document.getElementById("modalOverlay");
+document.getElementById("openSettings").addEventListener("click", () => { modalOverlay.style.display = "flex"; renderPriceFields(); });
+document.getElementById("closeModal").addEventListener("click", () => { modalOverlay.style.display = "none"; });
+modalOverlay.addEventListener("click", (e) => { if (e.target === modalOverlay) modalOverlay.style.display = "none"; });
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab = btn.dataset.tab;
+    document.getElementById("tabPrices").style.display = tab === "prices" ? "block" : "none";
+    document.getElementById("tabData").style.display = tab === "data" ? "block" : "none";
+  });
+});
+
+function renderPriceFields() {
+  const container = document.getElementById("priceFields");
+  container.innerHTML = "";
+  UTILITIES.forEach(u => {
+    const div = document.createElement("div");
+    div.className = "price-row";
+    div.innerHTML = `
+      <div class="field-label">${u.emoji} ${u.label} — €/${u.unit}</div>
+      <input type="number" step="0.001" class="price-input" id="price_${u.key}" value="${state.prices[u.key]}" />
+    `;
+    container.appendChild(div);
+  });
+  UTILITIES.forEach(u => {
+    document.getElementById(`price_${u.key}`).addEventListener("input", (e) => {
+      state.prices[u.key] = e.target.value === "" ? 0 : parseFloat(e.target.value);
+      saveState();
+      renderHistory();
+      renderChart();
+    });
+  });
+}
+
+// ---------- Export / Import ----------
+function downloadBlob(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("exportJson").addEventListener("click", () => {
+  downloadBlob(JSON.stringify(state, null, 2), `zaehlerstand-backup-${todayStr()}.json`, "application/json");
+});
+
+document.getElementById("exportCsv").addEventListener("click", () => {
+  const rows = [["Datum", "Gas (m³)", "Wasser (m³)", "Strom (kWh)"]];
+  chronological().forEach(r => {
+    rows.push([r.date, r.gas ?? "", r.wasser ?? "", r.strom ?? ""]);
+  });
+  const csv = rows.map(row => row.join(";")).join("\n");
+  downloadBlob("\uFEFF" + csv, `zaehlerstand-${todayStr()}.csv`, "text/csv;charset=utf-8");
+});
+
+document.getElementById("importFile").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  const statusEl = document.getElementById("importStatus");
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try {
+      const parsed = JSON.parse(evt.target.result);
+      if (!parsed.readings || !Array.isArray(parsed.readings)) throw new Error("Ungültiges Format");
+      state.readings = parsed.readings;
+      state.prices = parsed.prices || state.prices;
+      saveState();
+      renderHistory();
+      renderChart();
+      renderPriceFields();
+      statusEl.textContent = `${parsed.readings.length} Ablesungen importiert.`;
+      statusEl.className = "status-msg status-ok";
+    } catch (err) {
+      statusEl.textContent = "Import fehlgeschlagen — ist das eine gültige Backup-Datei?";
+      statusEl.className = "status-msg status-err";
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+// ---------- Init ----------
+loadState();
+renderFormFields();
+renderHistory();
+renderChart();
+</script>
+
+</body>
+</html>
